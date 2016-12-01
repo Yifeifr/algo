@@ -1,0 +1,59 @@
+//Kth Smallest Sum In Two Sorted Arrays
+struct Node {
+    int value;
+    int x;
+    int y;
+    
+    Node(int _v, int _x, int _y):value(_v), x(_x), y(_y) {}
+    bool operator < (const Node & obj) const {
+        return value > obj.value;
+    }
+};
+
+
+class Solution {
+public:
+    /**
+     * @param A an integer arrays sorted in ascending order
+     * @param B an integer arrays sorted in ascending order
+     * @param k an integer
+     * @return an integer
+     */
+    int kthSmallestSum(vector<int>& A, vector<int>& B, int k) {
+        // Write your code here
+        int column = A.size();
+        int row = B.size();
+        priority_queue<Node> queue;
+        unordered_map<int, bool> mp;
+        queue.push(Node(A[0] + B[0], 0, 0));
+        mp[0] = true;
+        
+        
+        for (int i = 0; i < k; i++) {
+            Node tmp = queue.top();
+            queue.pop();
+            int value = tmp.value;
+            //cout << " value = "<<value;
+            int x = tmp.x;
+            int y = tmp.y;
+            
+            if (i == k - 1)
+                return value;
+            
+            if (x + 1 < column) {
+                int data = (x + 1)*row + y;
+                if (mp.find(data) == mp.end()) {
+                    mp[data] = true;
+                    queue.push(Node(A[x + 1] + B [y], x + 1, y));
+                }
+            }
+            if (y + 1 < row) {
+                int data = x*row + y + 1;
+                if (mp.find(data) == mp.end()) {
+                    mp[data] = true;
+                    queue.push(Node(A[x] + B[y + 1], x, y + 1));
+                }
+            }
+        }
+    }
+};

@@ -1,0 +1,37 @@
+//Kth Largest Element
+class Solution {
+public:
+    /*
+     * param k : description of k
+     * param nums : description of array and index 0 ~ n-1
+     * return: description of return
+     */
+
+    int findIndex(vector<int> &nums, int left, int right) {
+        int tmp = nums[right];
+        int j = left;
+        
+        for (int i = left; i < right; ++i) {
+            if (nums[i] <= tmp) {
+                swap(nums[j], nums[i]);
+                j ++;
+            }
+        }
+        swap(nums[j], nums[right]);
+        return j;
+    }
+    void quickSort(vector<int> &nums, int left, int right) {
+        if (left < right) {
+            int index = findIndex(nums, left, right);
+            quickSort(nums, left, index - 1);
+            quickSort(nums, index + 1, right);
+        }
+    }
+    
+    int kthLargestElement(int k, vector<int> nums) {
+        // write your code here
+        int n = nums.size();
+        quickSort(nums, 0, n - 1);
+        return nums[n - k];
+    }
+};

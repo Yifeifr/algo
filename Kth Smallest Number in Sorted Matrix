@@ -1,0 +1,47 @@
+struct Node {
+    int value;
+    int id;
+    int index;
+    Node(int _v, int _id, int _index):
+        value(_v), id(_id), index(_index) {}
+    
+    bool operator < (const Node & obj) const {
+        return value > obj.value;
+    }
+};
+class Solution {
+//Kth Smallest Number in Sorted Matrix
+public:
+    /**
+     * @param matrix: a matrix of integers
+     * @param k: an integer
+     * @return: the kth smallest number in the matrix
+     */
+    int kthSmallest(vector<vector<int> > &matrix, int k) {
+        // write your code here
+        priority_queue<Node> queue;
+        int n = matrix.size();
+        for (int i = 0; i < n; ++i) {
+            int id = i;
+            int index = 0;
+            int value = matrix[i][index];
+            
+            queue.push(Node(value, id, index));
+        }
+        for (int i = 0; i < k; ++i) {
+            Node tmp = queue.top();
+            queue.pop();
+            int value = tmp.value;
+            int id = tmp.id;
+            int index = tmp.index;
+            
+            if (i == k - 1)
+                return value;
+            if (index < matrix[id].size() - 1) {
+                index ++;
+                value = matrix[id][index];
+                queue.push(Node(value, id, index));
+            }
+        }
+    }
+};
