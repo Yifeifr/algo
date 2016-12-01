@@ -1,3 +1,3 @@
 # algo
 
-Algorithme and Data Structure
+Algorithm and Data Structure
