@@ -1,0 +1,45 @@
+//Kth Smallest Numbers in Unsorted Array
+class Solution {
+public:
+    /*
+     * @param k an integer
+     * @param nums an integer array
+     * @return kth smallest element
+     */
+
+    void swap(int &i, int &j) {
+        int tmp = i;
+        i = j;
+        j = tmp;
+    }
+
+    int findIndex(vector<int> &nums, int left, int right) {
+        int tmp = nums[right];
+        int j = left - 1;
+        
+        for (int i = left; i < right; ++i) {
+            if (nums[i] <= tmp) {
+                j++;
+                swap(nums[j], nums[i]);
+            }
+        }
+        j ++;
+        swap(nums[j], nums[right]);
+        return j;
+    }
+
+    void quickSort(vector<int> &nums, int left, int right) {
+        if (left < right) {
+            int index = findIndex(nums, left, right);
+            quickSort(nums, left, index - 1);
+            quickSort(nums, index + 1, right);
+        }
+    }
+    
+    int kthSmallest(int k, vector<int> nums) {
+        // write your code here
+        int n = nums.size();
+            quickSort(nums, 0, n - 1);
+            return nums[k - 1];
+    }
+};
